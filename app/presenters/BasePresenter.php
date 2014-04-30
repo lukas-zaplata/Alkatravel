@@ -1,6 +1,8 @@
 <?php
 	namespace App\Presenters;
 
+	use WebLoader\Nette\JavaScriptLoader;
+
 	use WebLoader\Nette\CssLoader;
 
 	use WebLoader\Filter\LessFilter;

@@ -7,11 +7,11 @@
 
 	<title></title>
 
-	{control css "screen.less", "grid.css"}
+	{control css "screen.less", "grid.css", "jquery.plupload.queue.css"}
 	
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
 	
-	
+	{control js "jquery.js", "grid.js", "nette.ajax.js", "tinymce/tinymce.min.js", "plupload.full.js", "plupload.cs.js", "jquery.plupload.queue.js", "fce.js"}
 </head>
 
 <body>
@@ -26,26 +26,32 @@
 					<a class="navbar-brand" href="#">Brand</a>
 				</div>
 				
-				{if $user->loggedIn}
-					<form class="navbar-form navbar-right" role="search">
-						<div class="form-group">
-							{$user->identity->name} {$user->identity->surname}
-	        				<a href="{link Homepage:out}" class="btn btn-default">Odhlásit</a>
-	        			</div>
-      				</form>
-				{else}
-					{form signInForm}
-						<div class="form-group">
-							<div class="col-xs-5">
-								{input email class => "form-control", placeholder => "email"}
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+					  <li class="{ifCurrent Homepage:*}active{/ifCurrent}"><a href="{plink Homepage:}">Kampaně</a></li>
+					</ul>
+					
+					{if $user->loggedIn}
+						<form class="navbar-form navbar-right" role="search">
+							<div class="form-group">
+								{$user->identity->name} {$user->identity->surname}
+		        				<a href="{link Homepage:out}" class="btn btn-default">Odhlásit</a>
+		        			</div>
+	      				</form>
+					{else}
+						{form signInForm}
+							<div class="form-group">
+								<div class="col-xs-5">
+									{input email class => "form-control", placeholder => "email"}
+								</div>
+								<div class="col-xs-5">
+									{input password class => "form-control", placeholder => "heslo"}
+								</div>
+								<button type="submit" class="btn btn-default col-xs-2">Přihlásit</button>
 							</div>
-							<div class="col-xs-5">
-								{input password class => "form-control", placeholder => "heslo"}
-							</div>
-							<button type="submit" class="btn btn-default col-xs-2">Přihlásit</button>
-						</div>
-					{/form}
-				{/if}
+						{/form}
+					{/if}
+				</div>
 			</div>
 		</div>
 	</nav>

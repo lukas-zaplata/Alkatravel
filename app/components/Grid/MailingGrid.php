@@ -42,17 +42,12 @@
 					}
 				});
 			
-			$this->addButton(Grid::ROW_FORM, "Rychlá editace")
-				->setClass("fast-edit");
+			/*$this->addButton(Grid::ROW_FORM, "Rychlá editace")
+				->setClass("fast-edit");*/
 			
 			$this->addButton('edit', 'Editovat')
-				->setClass('edit')
-				->setLink(function($row) use ($self){return $self->presenter->link('Mailing:edit', array($row['id']));})
-				->setAjax(false);
-			
-			$this->addButton('files', 'Přílohy')
-				->setClass('files')
-				->setLink(function($row) use ($self){return $self->presenter->link('Mailing:files', array($row['filestores_id']));})
+				->setClass('fa fa-pencil')
+				->setLink(function($row) use ($self){return $self->presenter->link('Homepage:edit', array($row['id']));})
 				->setAjax(false);
 			
 			$this->addButton('preview', 'Náhled')
@@ -65,21 +60,15 @@
 				->setLink(function ($row) use ($self) {return $self->presenter->link('Mailing:graph', array($row['id']));})
 				->setAjax(false);
 			
-			/*
 			$this->addButton('gallery', 'Galerie')
-				->setClass('gallery')
-				->setLink(function($row) use ($self){return $self->presenter->link('Mailing:gallery', array($row['galleries_id']));})
+				->setClass('fa fa-camera')
+				->setLink(function($row) use ($self){return $self->presenter->link('Homepage:gallery', array($row['galleries_id']));})
 				->setAjax(false);
 			
-			$this->addButton('preview', 'Náhled')
-				->setClass('email')
-				->setLink(function($row) use ($self){return $self->presenter->link('Mailing:preview', array($row['galleries_id']));})
-				->setAjax(false);
-			*/
 			$this->addButton('delete', 'Smazat')
-				->setClass('del')
+				->setClass('fa fa-trash-o')
 				->setLink(function($row) use ($self){return $self->presenter->link('Delete!', array($row['id']));})
-				->setConfirmationDialog(function($row){return "Opravdu odstranit e-mail $row[name]?";});
+				->setConfirmationDialog(function($row){return "Opravdu odstranit $row[name]?";});
 			
 			$this->setTemplate(APP_DIR.'/templates/Grid/grid.latte');
 			$this->paginate = false;
@@ -87,7 +76,7 @@
 			
 			$this->addAction("delete","Smazat")
 				->setCallback(function($id) use ($self){return $self->presenter->handleDelete($id);})
-				->setConfirmationDialog("Opravdu smazat všechny vybrané uživatele?");
+				->setConfirmationDialog("Opravdu smazat všechny vybrané kampaně?");
 			
 			$this->setRowFormCallback(function ($values) use ($self) {
 				$row = $self->data->find($values['id']);

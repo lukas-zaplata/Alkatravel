@@ -45,12 +45,7 @@
 		public function actionEdit ($id) {
 			$this->id = $id;
 			
-			if (!$this['mailContent']->getParameter('order') && !$_GET) {
-				$this->redirect('this', array('mailContent-order' => 'position ASC'));
-			}
-			
 			$this->email = $this->model->getEmails()->wherePrimary($id)->fetch();
-			$this->emailContent = $this->model->getEmailsContent()->where('emails_id', $id)->order('position ASC');
 		}
 		
 		public function actionGroups () {
@@ -121,6 +116,14 @@
 			
 			if (!$this['mails']->getParameter('order')) {
 				$this->redirect('this', array('mails-order' => 'email ASC'));
+			}
+		}
+		
+		public function actionGallery ($id) {
+			$this->id = $id;
+			
+			if (!isset($this->request->parameters['gallery-grid-order'])) {
+				$this->redirect('this', array('gallery-grid-order' => 'name ASC'));
 			}
 		}
 		
@@ -202,7 +205,7 @@
 			
 			$form->getElementPrototype()->class('form-horizontal');
 			
-			$form->addGroup('e-mail');
+			$form->addGroup('Kampaň');
 			$mail = $form->addContainer('email');
 			$mail->addText('name', 'Jméno:')
 				->setRequired('Vyplňte prosím název e-mailu!');
@@ -210,21 +213,7 @@
 			$mail->addText('subject', 'Předmět:')
 				->setRequired('Vyplňte prosím předmět e-mailu!');
 			
-			$mail->addTextarea('text', 'Text:')
-				->getControlPrototype()->class('tinymce');
-			
-			if ($this->email) {
-				$form->addGroup('připojení obsahu');
-				$content = $form->addContainer('content');
-			
-				$content->addSelect('modules_id', 'Modul:', $this->model->getModules()->fetchPairs('id', 'name'))
-					->setPrompt('--Vyberte možnost--');
-				
-// 				$form->addGroup('připojení přílohy');
-// 				$attachment = $form->addContainer('attachment');
-				
-// 				$attachment->addMultiSelect('attachments', 'Přílohy:', $this->model->getFilestoresFiles()->where('filestores_id', $this->email->filestores_id)->fetchPairs('id', 'name'));
-			}
+			$mail->addTextarea('text', 'Text:');
 			
 			$form->addGroup()
 				->setOption('container', 'fieldset class="submit"');
@@ -234,13 +223,11 @@
 			
 			if ($this->email) {
 				$values['email'] = $this->email;
-// 				$values['users']['groups'] = $this->email->related('emails_categories')->fetchPairs('categories_id', 'categories_id');
-// 				$values['attachment']['attachments'] = $this->email->related('emails_attachments')->fetchPairs('filestores_files_id', 'filestores_files_id');
 				
 				$form->setValues($values);
 			}
 			
-			$form->setRenderer(new BootstrapFormRenderer());
+			$form->setRenderer(new BootstrapFormRenderer);
 			
 			return $form;
 		}
@@ -248,12 +235,11 @@
 		public function addEmail ($form) {
 			$values = $form->values;
 			$values['email']['galleries_id'] = $this->model->getGalleries()->insert(array());
-			$values['email']['filestores_id'] = $this->model->getFilestores()->insert(array());
 			
 			$lastID = $this->model->getEmails()->insert($values['email']);
 			
 			$this->flashMessage('Email byl vytvořen');
-			$this->redirect('Mailing:');
+			$this->redirect('Homepage:');
 		}
 		
 		public function editEmail ($form) {
@@ -263,7 +249,7 @@
  			$email->update($values['email']);
 			
 			$this->flashMessage('Email byl upraven');
-			$this->redirect('Mailing:');
+			$this->redirect('Homepage:');
 		}
 		
 		public function handleAddContent () {
