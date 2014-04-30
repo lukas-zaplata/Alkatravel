@@ -1,0 +1,30 @@
+{block #content}	
+	<fieldset>
+		<legend>Originální obrázek</legend>
+		
+		<img src="{$basePath}/files/galleries/g{$image->galleries}-{$image->name}" title="{$image->title}" id="jcrop" />
+		
+		{control cropForm}
+	</fieldset>
+	
+	<fieldset>
+		<legend>Náhledy</legend>
+		
+		{snippet thumbs}
+			<table>
+				<tbody>
+					<tr>
+						{foreach $dimensions as $dimension}
+							<td>
+								<img src="{$basePath}/files/galleries/{$dimension->dimension}_g{$image->galleries}-{$image->name}" title="{$image->title}">
+								
+								{if $dimension->operation == 1}
+									<br /><label><input type="radio" class="cropImage" name="crop" />Znovu oříznout? ({$dimension->dimension} px)</label>
+								{/if}	
+							</td>
+						{/foreach}
+					</tr>
+				</tbody>
+			</table>
+		{/snippet}
+	</fieldset>
