@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Nette\Application\Routers\CliRouter;
+
 use Nette,
 	Nette\Application\Routers\RouteList,
 	Nette\Application\Routers\Route,
@@ -13,6 +15,11 @@ use Nette,
  */
 class RouterFactory
 {
+	private $container;
+	
+	public function __construct(Nette\DI\Container $container) {
+		$this->container = $container;
+	}
 
 	/**
 	 * @return \Nette\Application\IRouter
@@ -20,7 +27,14 @@ class RouterFactory
 	public function createRouter()
 	{
 		$router = new RouteList();
-		$router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
+		
+		if ($this->container->parameters['consoleMode']) {
+			$router[] = new CliRouter(array('action' => 'Cli:default'));
+		} 
+		else {
+			$router[] = new Route('<presenter>/<action>[/<id>]', 'Homepage:default');
+		}
+		
 		return $router;
 	}
 

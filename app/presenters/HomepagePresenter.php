@@ -1,6 +1,12 @@
 <?php
 	namespace App\Presenters;
 
+	use AdminModule\MailingGroupUsersGrid;
+
+	use AdminModule\MailingGroupGrid;
+
+	use AdminModule\MailingMailQueueGrid;
+
 	use Nette\Forms\Rendering\BootstrapFormRenderer;
 
 	use AdminModule\MailingGrid;
@@ -54,7 +60,7 @@
 			if(!isset($params["groupGrid-order"]) && $params["action"] == 'groups'){
 			//	unset($params["action"]);
 				$params["groupGrid-order"] = "name ASC";
-				$this->redirect("Mailing:groups",$params);
+				$this->redirect("Homepage:groups",$params);
 			}
 			$this->groups = $this->model->getCategories()->where('sections_id', -1);
 		}
@@ -147,13 +153,11 @@
 		
 		public function renderPreview () {
 			$template = $this->createTemplate(); 
-			$template->setFile(APP_DIR.'/FrontModule/templates/Mailing/layout.latte');
+			$template->setFile(APP_DIR.'/templates/Mailing/layout.latte');
 			$template->registerFilter(new Engine());
 			$template->registerHelperLoader('Nette\Templating\Helpers::loader');
 			$template->host = $this->context->parameters['host'];
 			$template->email = $this->email;
-			$template->contents = $this->email->related('emails_content')->order('position ASC');
-			$template->editors = $this->model->getEditors();
 			$template->model = $this->model;
 			
 			$this->template->html = $template;
@@ -475,7 +479,9 @@
 		
 		public function createComponentAddEmails () {
 			$form = new Form();
-				
+			
+			$form->getElementPrototype()->class('form-horizontal');
+			
 			$form->addGroup('Nahrání mailových adres');
 			$form->addTextarea('emails', 'Adresy')
 				->setRequired()
@@ -486,6 +492,8 @@
 			$form->addSubmit('upload', 'nahrát');
 				
 			$form->onSuccess[] = callback($this, 'addEmails');
+			
+			$form->setRenderer(new BootstrapFormRenderer());
 				
 			return $form;
 		}

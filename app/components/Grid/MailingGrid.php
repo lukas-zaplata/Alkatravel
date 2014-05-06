@@ -38,7 +38,7 @@
 			$this->addColumn('queue', 'Stav', '50px')
 				->setRenderer(function ($row) use ($self) {
 					if ($self->presenter->model->getEmailsQueue()->where('emails_id', $row['id'])->where('date >= ?', date('Y-m-d H:i'))->fetch()) {
-						return Html::el('img')->src($self->presenter->context->httpRequest->url->basePath.'/adminModule/images/sending.gif')->style('width', 'auto');
+						return Html::el('span')->class('fa fa-clock-o');
 					}
 				});
 			
@@ -51,13 +51,13 @@
 				->setAjax(false);
 			
 			$this->addButton('preview', 'Náhled')
-				->setClass('email')
-				->setLink(function($row) use ($self){return $self->presenter->link('Mailing:preview', array($row['id']));})
+				->setClass('fa fa-search')
+				->setLink(function($row) use ($self){return $self->presenter->link('Homepage:preview', array($row['id']));})
 				->setAjax(false);
 			
 			$this->addButton('graph', 'Graf')
-				->setClass('graph')
-				->setLink(function ($row) use ($self) {return $self->presenter->link('Mailing:graph', array($row['id']));})
+				->setClass('fa fa-bar-chart-o')
+				->setLink(function ($row) use ($self) {return $self->presenter->link('Homepage:graph', array($row['id']));})
 				->setAjax(false);
 			
 			$this->addButton('gallery', 'Galerie')

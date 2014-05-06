@@ -263,11 +263,11 @@
 }
 
 .grid .grid-button {
-    display: table-cell;
     min-height: 22px;
     min-width: 24px;
     text-align: center;
-    vertical-align: middle;    
+    vertical-align: middle;
+    display: table-cell;
 }
 
 .grid .grid-button:hover {
@@ -334,7 +334,8 @@
 }
 
 .grid .grid-add-row{
-    background: url('images/add.png') no-repeat 4px;
+    background: url('../images/niftygrid/add.png') no-repeat 4px;
+    display: block !important;
 }
 
 .grid-flash{

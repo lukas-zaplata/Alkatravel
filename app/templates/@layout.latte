@@ -7,11 +7,11 @@
 
 	<title></title>
 
-	{control css "screen.less", "grid.css", "jquery.plupload.queue.css"}
+	{control css "screen.less", "grid.css", "jquery.plupload.queue.css", "jquery-ui.css"}
 	
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
 	
-	{control js "jquery.js", "grid.js", "nette.ajax.js", "tinymce/tinymce.min.js", "plupload.full.js", "plupload.cs.js", "jquery.plupload.queue.js", "fce.js"}
+	{control js "jquery.js", "jquery-ui.js", "jquery-timepicker.js", "grid.js", "nette.ajax.js", "tinymce/tinymce.min.js", "plupload.full.js", "plupload.cs.js", "jquery.plupload.queue.js", "fce.js"}
 </head>
 
 <body>
@@ -28,7 +28,8 @@
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-					  <li class="{ifCurrent Homepage:*}active{/ifCurrent}"><a href="{plink Homepage:}">Kampaně</a></li>
+						<li class="{ifCurrentIn 'Homepage:default', 'Homepage:add', 'Homepage:edit', 'Homepage:preview', 'Homepage:graph'}active{/ifCurrentIn}"><a href="{plink Homepage:}">Kampaně</a></li>
+						<li class="{ifCurrentIn 'Homepage:groups', 'Homepage:editGroup'}active{/ifCurrentIn}"><a href="{plink Homepage:groups}">Skupiny</a></li>
 					</ul>
 					
 					{if $user->loggedIn}

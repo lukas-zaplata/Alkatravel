@@ -21,6 +21,13 @@ $(document).ready(function () {
 			}
 		}
 	});
+	
+	$(".grid-datepicker").live('focus', function () {
+		$(this).datetimepicker({
+			dateFormat: "yy-mm-dd",
+			timeFormat: "HH:mm"
+		});
+	});
 });
 
 function loadTinyMCE (path) {	
@@ -57,7 +64,7 @@ function loadTinyMCE (path) {
 			var browser = '', stop;
 			
 			for (var i=0; i<pages.length; i++) {
-				if (pages[i] != 'admin') {
+				if (pages[i] != 'homepage') {
 					if (stop != 1) {
 						browser = browser+pages[i]+'/';
 					}
@@ -68,7 +75,7 @@ function loadTinyMCE (path) {
 			}
 			
 			tinymce.activeEditor.windowManager.open({
-			    file : browser+'admin/browser/'+type,
+			    file : browser+'browser/'+type,
 			    title : 'File manager',
 			    width : 960,
 			    height : 600,
@@ -78,4 +85,15 @@ function loadTinyMCE (path) {
 			return false;
 	    }
 	});
+}
+
+function addUrl (url, alt) {
+	var altInput = $(top.document).find("div[role=dialog] input:eq(1)");
+
+	$(top.document).find("div[role=dialog] input:first").val(url);
+	if (altInput.val() == '') {
+		altInput.val(alt);
+	}
+	
+	top.tinymce.activeEditor.windowManager.close();
 }

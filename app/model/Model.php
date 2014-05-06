@@ -51,4 +51,12 @@
 		public function getEmailsQueue () {
 			return $this->database->table('emails_queue');
 		}
+		
+		public function getCategories () {
+			return $this->database->table('categories');
+		}
+		
+		public function getUsersInserted ($id) {
+			return $this->database->table('(SELECT users.*, u.categories_id AS visibility FROM users LEFT JOIN users_categories AS u ON users.id = u.users_id AND u.categories_id = '.$id.') AS temp');
+		}
 	}

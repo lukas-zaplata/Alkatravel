@@ -5,7 +5,10 @@
 # http://nette.org/security-warning
 #
 parameters:
-
+	contact:
+		name: Lukáš Záplata
+		email: zap@hucr.cz
+	host: "http://localhost/Alkatravel/www"
 
 php:
 	date.timezone: Europe/Prague
@@ -20,6 +23,12 @@ nette:
 
 	session:
 		expiration: 14 days
+		
+	mailer:
+		smtp: true
+		host: "mail1.hucr.cz"
+		username: "zap@hucr.cz"
+		password: "ZaP2011"
 
 
 services:

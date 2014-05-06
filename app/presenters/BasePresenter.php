@@ -1,6 +1,12 @@
 <?php
 	namespace App\Presenters;
 
+	use FrontModule\Newsletter;
+
+	use Nette\Latte\Macros\MacroSet;
+
+	use Nette\Latte\Engine;
+
 	use WebLoader\Nette\JavaScriptLoader;
 
 	use WebLoader\Nette\CssLoader;
@@ -19,12 +25,27 @@
 	 * Base presenter for all application presenters.
 	 */
 	abstract class BasePresenter extends Nette\Application\UI\Presenter {
-		public $model;
+		public $model;		
+		public $presenterName;
 		
 		public function startup () {
 			parent::startup();
 			
 			$this->model = $this->context->model;
+			$this->presenterName = $this->presenter->name;
+		}
+		
+		public function templatePrepareFilters($template) {
+			self::registerMacros($template);
+		}
+		
+		public static function registerMacros ($template) {
+			$latte = new Engine();
+			$set = new MacroSet($latte->compiler);
+				
+			$set->addMacro('ifCurrentIn', 'if (in_array(trim("$presenter->presenterName:$presenter->action"), $presenter->formatCurrent(%node.array))):', 'endif');
+				
+			$template->registerFilter($latte);
 		}
 		
 		protected function cssFileCollection ($subdir = NULL) {
@@ -58,5 +79,15 @@
 			$this->getUser()->logout();
 			$this->flashMessage('Odhlášení proběhlo v pořádku');
 			$this->redirect('Sign:in');
+		}
+		
+		public function formatCurrent ($array) {
+			foreach ($array as $key => $val) {
+				if (preg_match('/(.*):(.*)/', $val, $params)) {
+					$array[$key] = $params[1].":".($params[2] == '*' ? $this->action : $params[2]);
+				}
+			}
+				
+			return $array;
 		}
 	}

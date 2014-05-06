@@ -1,10 +1,11 @@
 parameters:
-
+	host: "http://localhost/Alkatravel/www"
 
 nette:
 	database:
 		dsn: 'mysql:host=127.0.0.1;dbname=mailing'
 		user: root
 		password:
+		reflection: conventional
 		options:
 			lazy: yes
